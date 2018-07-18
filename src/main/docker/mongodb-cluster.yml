@@ -1,0 +1,16 @@
+version: '2'
+services:
+    jh20180718-mongodb:
+        image: mongo:3.6.3
+        ports:
+            - "27017:27017"
+        command: mongos --configdb jh20180718-mongodb-config
+    jh20180718-mongodb-node:
+        build:
+            context: .
+            dockerfile: mongodb/MongoDB.Dockerfile
+        command: mongod --replSet rs1 --noprealloc --smallfiles
+    jh20180718-mongodb-config:
+        image: mongo:3.6.3
+        container_name: jh20180718-mongodb-config
+        command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db
